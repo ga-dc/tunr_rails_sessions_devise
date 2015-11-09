@@ -1,7 +1,14 @@
 class ArtistsController < ApplicationController
   # index
+  def testing_session
+    session[:test] = "bob"
+  end
   def index
+    @artist = session[:last_viewed_artist]
     @artists = Artist.all
+  end
+  def deleting_session
+    session.delete(:test)
   end
 
   # new
@@ -18,6 +25,7 @@ class ArtistsController < ApplicationController
   #show
   def show
     @artist = Artist.find(params[:id])
+    session[:last_viewed_artist] = @artist
   end
 
   # edit
@@ -40,7 +48,7 @@ class ArtistsController < ApplicationController
     redirect_to artists_path
   end
 
-  private 
+  private
   def artist_params
     params.require(:artist).permit(:name, :photo_url, :nationality)
   end
